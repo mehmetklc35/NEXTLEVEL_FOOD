@@ -1,12 +1,17 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
-import { getMeal } from '@/lib/meals';
+import { getMeal } from "@/lib/meals";
 import classes from "./page.module.css";
 
-export default function MealDetailPage({params}) {
-  const meal = getMeal(params.mealSlug)
+export default function MealDetailPage({ params }) {
+  const meal = getMeal(params.mealSlug);
 
-  meal.instructions = meal.instructions.replace(/\n/g, '<br />');
+  if (!meal) {
+    notFound();
+  }
+
+  meal.instructions = meal.instructions.replace(/\n/g, "<br />");
 
   return (
     <>
@@ -25,7 +30,7 @@ export default function MealDetailPage({params}) {
       <main>
         <p
           className={classes.instructions}
-          dangerouslySetInnerHTML={{ __html: meal.instructions, }}
+          dangerouslySetInnerHTML={{ __html: meal.instructions }}
         ></p>
       </main>
     </>
